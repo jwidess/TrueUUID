@@ -226,16 +226,7 @@ public abstract class ServerLoginMixin {
                                     }
                                 }
                                 this.gameProfile = newProfile;
-                                try {
-                                    Method method = this.getClass().getDeclaredMethod("m_10055_");
-                                    method.setAccessible(true);
-                                    method.invoke(this);
-                                } catch (Exception e) {
-                                    if (TrueuuidConfig.debug()) {
-                                        System.out.println("[TrueUUID] 调用失败: " + e);
-                                    }
-                                    disconnect(Component.literal("服务器错误，请稍后重试"));
-                                }
+                                trueuuid$proceedLogin();
                             } catch (Throwable t) {
                                 if (TrueuuidConfig.debug()) {
                                     System.out.println("[TrueUUID] 认证异步处理时发生异常: " + t);
@@ -260,6 +251,20 @@ public abstract class ServerLoginMixin {
     }
 
     @Unique
+    private void trueuuid$proceedLogin() {
+        try {
+            Method method = this.getClass().getDeclaredMethod("m_10055_");
+            method.setAccessible(true);
+            method.invoke(this);
+        } catch (Exception e) {
+            if (TrueuuidConfig.debug()) {
+                System.out.println("[TrueUUID] 调用失败: " + e);
+            }
+            disconnect(Component.literal("服务器错误，请稍后重试"));
+        }
+    }
+
+    @Unique
     private void handleAuthFailure(String ip, String why) {
         String name = this.gameProfile != null ? this.gameProfile.getName() : "<unknown>";
         if (TrueuuidConfig.debug()) {
@@ -273,8 +278,10 @@ public abstract class ServerLoginMixin {
                         : TrueuuidRuntime.NAME_REGISTRY.getPremiumUuid(name).orElse(null);
                 if (premium != null) {
                     this.gameProfile = new GameProfile(premium, name);
+                    trueuuid$proceedLogin();
                 } else {
                     AuthState.markOfflineFallback(this.connection, AuthState.FallbackReason.FAILURE);
+                    trueuuid$proceedLogin();
                 }
             }
             case OFFLINE -> {
@@ -282,6 +289,7 @@ public abstract class ServerLoginMixin {
                     System.out.println("[TrueUUID] 离线进入");
                 }
                 AuthState.markOfflineFallback(this.connection, AuthState.FallbackReason.FAILURE);
+                trueuuid$proceedLogin();
             }
             case DENY -> {
                 String msg = d.denyMessage != null ? d.denyMessage
