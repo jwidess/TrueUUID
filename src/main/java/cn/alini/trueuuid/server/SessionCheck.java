@@ -49,7 +49,7 @@ public final class SessionCheck {
                 + "&serverId=" + URLEncoder.encode(serverId, StandardCharsets.UTF_8);
 
         if (cn.alini.trueuuid.config.TrueuuidConfig.debug()) {
-            System.out.println("[TrueUUID][DEBUG] 请求 Mojang 校验接口: " + url);
+            System.out.println("[TrueUUID][DEBUG] Requesting Mojang verification interface: " + url);
         }
 
         HttpRequest req = HttpRequest.newBuilder(URI.create(url)).GET().build();
@@ -57,13 +57,13 @@ public final class SessionCheck {
         return HTTP.sendAsync(req, HttpResponse.BodyHandlers.ofString())
                 .thenApply(resp -> {
                     if (cn.alini.trueuuid.config.TrueuuidConfig.debug()) {
-                        System.out.println("[TrueUUID][DEBUG] Mojang 响应状态码: " + resp.statusCode());
-                        System.out.println("[TrueUUID][DEBUG] Mojang 响应内容: " + resp.body());
+                        System.out.println("[TrueUUID][DEBUG] Mojang response status code: " + resp.statusCode());
+                        System.out.println("[TrueUUID][DEBUG] Mojang response content: " + resp.body());
                     }
 
                     if (resp.statusCode() != 200) {
                         if (cn.alini.trueuuid.config.TrueuuidConfig.debug()) {
-                            System.out.println("[TrueUUID][DEBUG] 校验失败，状态码非200，返回空");
+                            System.out.println("[TrueUUID][DEBUG] Verification failed, status code not 200, returning empty");
                         }
                         return Optional.<HasJoinedResult>empty();
                     }
@@ -71,7 +71,7 @@ public final class SessionCheck {
                     HasJoinedJson dto = GSON.fromJson(resp.body(), HasJoinedJson.class);
                     if (dto == null || dto.id == null) {
                         if (cn.alini.trueuuid.config.TrueuuidConfig.debug()) {
-                            System.out.println("[TrueUUID][DEBUG] 解析JSON失败或未获取到UUID，返回空");
+                            System.out.println("[TrueUUID][DEBUG] Failed to parse JSON or UUID not obtained, returning empty");
                         }
                         return Optional.<HasJoinedResult>empty();
                     }
@@ -81,7 +81,7 @@ public final class SessionCheck {
                             "$1-$2-$3-$4-$5"));
 
                     if (cn.alini.trueuuid.config.TrueuuidConfig.debug()) {
-                        System.out.println("[TrueUUID][DEBUG] 校验成功，UUID: " + uuid + "，玩家名: " + dto.name);
+                        System.out.println("[TrueUUID][DEBUG] Verification successful, UUID: " + uuid + ", Player Name: " + dto.name);
                     }
 
                     List<Property> props = dto.properties == null ? List.of() :
@@ -93,7 +93,7 @@ public final class SessionCheck {
                 })
                 .exceptionally(ex -> {
                     if (cn.alini.trueuuid.config.TrueuuidConfig.debug()) {
-                        System.out.println("[TrueUUID][DEBUG] 与 Mojang 通信或解析时发生异常: " + ex);
+                        System.out.println("[TrueUUID][DEBUG] Exception occurred during communication with Mojang or parsing: " + ex);
                     }
                     return Optional.empty();
                 });
@@ -102,7 +102,7 @@ public final class SessionCheck {
     // 保留同步方法（若需要）或移除 (Keep synchronous method (if needed) or remove)
     public static Optional<HasJoinedResult> hasJoined(String username, String serverId, String ip) throws Exception {
         // 保留原同步实现（或内部调用 hasJoinedAsync().get()，视需要） (Keep original synchronous implementation (or call hasJoinedAsync().get() internally, as needed))
-        throw new UnsupportedOperationException("同步 hasJoined 已不推荐使用，请使用 hasJoinedAsync");
+        throw new UnsupportedOperationException("Synchronous hasJoined is deprecated, please use hasJoinedAsync");
     }
 
     private SessionCheck() {}

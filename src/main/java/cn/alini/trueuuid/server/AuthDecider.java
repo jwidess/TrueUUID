@@ -22,7 +22,7 @@ public final class AuthDecider {
         // 1) 已验证过正版的名字：禁止离线回落 (Names already verified as premium: Deny offline fallback)
         if (known && TrueuuidConfig.knownPremiumDenyOffline()) {
             d.kind = Decision.Kind.DENY;
-            d.denyMessage = "该名称已绑定正版 UUID，鉴权失败时不允许以离线模式进入。请检查网络后重试。";
+            d.denyMessage = "This name is already bound to a premium UUID, offline mode entry is not allowed when authentication fails. Please check your network and try again.";
             return d;
         }
 
@@ -44,7 +44,7 @@ public final class AuthDecider {
 
         // 4) 否则拒绝 (Otherwise deny)
         d.kind = Decision.Kind.DENY;
-        d.denyMessage = "鉴权失败，已禁止离线进入以保护你的正版存档。请稍后重试。";
+        d.denyMessage = "Authentication failed, offline entry has been prohibited to protect your premium data. Please try again later.";
         return d;
     }
 

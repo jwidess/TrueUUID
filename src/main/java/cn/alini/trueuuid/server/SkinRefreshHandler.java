@@ -46,11 +46,11 @@ public class SkinRefreshHandler {
             // 聊天提示：长文案 (Chat notification: Long text)
             String longMsg = TrueuuidConfig.offlineFallbackMessage();
             if (longMsg == null || longMsg.isEmpty()) {
-                longMsg = "注意：你当前以离线模式进入服务器；如果你是正版账号，可能是网络原因导致无法成功鉴权，请重新登陆重试。";
+                longMsg = "Note: You are currently entering the server in offline mode; if you are a premium account, it may be due to network reasons causing authentication failure, please try logging in again.";
             }
 
             // Title：红色“离线模式”，副标题短文案（黄色） (Title: Red "Offline Mode", subtitle short text (Yellow))
-            var title = Component.literal("离线模式").withStyle(ChatFormatting.RED);
+            var title = Component.literal("Offline Mode").withStyle(ChatFormatting.RED);
             String shortSubtitle = TrueuuidConfig.offlineShortSubtitle();
             var subtitle = Component.literal(clamp(shortSubtitle, SUBTITLE_MAX_CHARS)).withStyle(ChatFormatting.YELLOW);
 
@@ -59,7 +59,7 @@ public class SkinRefreshHandler {
             sp.connection.send(new ClientboundSetSubtitleTextPacket(subtitle));
         } else {
             // 正版模式：绿色标题，副标题短文案（灰色） (Premium Mode: Green title, subtitle short text (Gray))
-            var title = Component.literal("正版模式").withStyle(ChatFormatting.GREEN);
+            var title = Component.literal("Premium Mode").withStyle(ChatFormatting.GREEN);
             String shortSubtitle = TrueuuidConfig.onlineShortSubtitle();
             var subtitle = Component.literal(clamp(shortSubtitle, SUBTITLE_MAX_CHARS)).withStyle(ChatFormatting.GRAY);
 

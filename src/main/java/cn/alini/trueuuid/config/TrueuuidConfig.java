@@ -65,31 +65,31 @@ public final class TrueuuidConfig {
             b.push("auth");
 
             timeoutMs = b.defineInRange("timeoutMs", 10_000L, 1_000L, 600_000L);
-            allowOfflineOnTimeout = b.comment("false:超时踢出(默认)true:超时放行为离线").define("allowOfflineOnTimeout", false);
-            allowOfflineOnFailure = b.comment("false:失败时踢出true:任何鉴权失败放行为离线(默认)").define("allowOfflineOnFailure", true);
+            allowOfflineOnTimeout = b.comment("false: Kick on timeout (default) true: Allow offline on timeout").define("allowOfflineOnTimeout", false);
+            allowOfflineOnFailure = b.comment("false: Kick on failure true: Allow offline on any auth failure (default)").define("allowOfflineOnFailure", true);
 
-            timeoutKickMessage = b.define("timeoutKickMessage", "登录超时，未完成账号校验");
+            timeoutKickMessage = b.define("timeoutKickMessage", "Login timeout, account verification not completed");
             offlineFallbackMessage = b.define(
                     "offlineFallbackMessage",
-                    "注意：你当前以离线模式进入服务器；如果你是正版账号，可能是网络原因导致无法成功鉴权，请重新登陆重试。继续游玩，若后续鉴权成功可能会丢失玩家数据。"
+                    "Note: You are currently entering the server in offline mode; if you are a premium account, it may be due to network reasons causing authentication failure, please try logging in again. Continuing to play may result in loss of player data if authentication succeeds later."
             );
 
             // 默认短、不占屏 (Default short, does not occupy screen)
-            offlineShortSubtitle = b.define("offlineShortSubtitle", "鉴权失败：离线模式");
-            onlineShortSubtitle  = b.define("onlineShortSubtitle",  "已通过正版校验");
+            offlineShortSubtitle = b.define("offlineShortSubtitle", "Auth Failed: Offline Mode");
+            onlineShortSubtitle  = b.define("onlineShortSubtitle",  "Premium Verified");
 
             // 策略项 (Strategy items)
-            knownPremiumDenyOffline   = b.comment("一旦该名字成功验证过正版，后续鉴权失败时禁止以离线身份进入。")
+            knownPremiumDenyOffline   = b.comment("Once a name has been verified as premium, offline entry is prohibited if subsequent authentication fails.")
                     .define("knownPremiumDenyOffline", true);
-            allowOfflineForUnknownOnly = b.comment("仅对从未验证为正版的新名字允许离线兜底。")
+            allowOfflineForUnknownOnly = b.comment("Only allow offline fallback for new names that have never been verified as premium.")
                     .define("allowOfflineForUnknownOnly", true);
-            recentIpGraceEnabled      = b.comment("启用“近期同 IP 成功”容错，在 TTL 内失败时临时按正版处理。")
+            recentIpGraceEnabled      = b.comment("Enable \"Recent Same IP Success\" grace, temporarily treat as premium if failed within TTL.")
                     .define("recentIpGrace.enabled", true);
-            recentIpGraceTtlSeconds   = b.comment("“近期同 IP 成功”容错的 TTL 秒数。建议 60~600。")
+            recentIpGraceTtlSeconds   = b.comment("TTL seconds for \"Recent Same IP Success\" grace. Recommended 60~600.")
                     .defineInRange("recentIpGrace.ttlSeconds", 300, 30, 3600);
-            debug = b.comment("启用调试日志输出").define("debug", false);
+            debug = b.comment("Enable debug log output").define("debug", false);
             // 新增：跳过 Mojang 会话认证（开启后不再通过 sessionserver 验证） (Added: Skip Mojang session auth (no longer verify via sessionserver when enabled))
-            nomojangEnabled = b.comment("开启后关闭对 Mojang 会话服务的在线校验逻辑；同 IP 且近期有正版成功的名称按正版 UUID 处理，其余直接按离线进入处理。")
+            nomojangEnabled = b.comment("When enabled, disables online verification against Mojang session service; names with recent successful premium login from same IP are treated as premium UUID, others are treated as offline.")
                     .define("nomojang.enabled", false);
             b.pop();
         }

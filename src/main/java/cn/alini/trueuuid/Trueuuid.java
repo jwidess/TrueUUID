@@ -21,7 +21,7 @@ public class Trueuuid {
         // ===== MoJang网络连通性测试 (Mojang Network Connectivity Test)=====
         // 若开启 nomojang，则跳过启动时的 Mojang 网络连通性检测 (If nomojang is enabled, skip Mojang network connectivity check at startup)
         if (TrueuuidConfig.nomojangEnabled()) {
-            LOGGER.info("nomojang 已启用，跳过 Mojang 会话服务器连通性检测");
+            LOGGER.info("nomojang enabled, skipping Mojang session server connectivity check");
         } else {
             // ===== MoJang网络连通性测试 (Mojang Network Connectivity Test )=====
             try {
@@ -35,15 +35,15 @@ public class Trueuuid {
 
                 int responseCode = conn.getResponseCode();
                 if (responseCode == 200 || responseCode == 204 || responseCode == 403) {
-                    LOGGER.info("成功连接到 Mojang 会话服务器 (sessionserver.mojang.com)，响应码: {}", responseCode);
+                    LOGGER.info("Successfully connected to Mojang session server (sessionserver.mojang.com), response code: {}", responseCode);
                 } else {
-                    LOGGER.warn("Mojang 会话服务器响应异常，响应码: {}", responseCode);
+                    LOGGER.warn("Mojang session server response exception, response code: {}", responseCode);
                 }
             } catch (Exception e) {
-                LOGGER.error("无法连接到 Mojang 会话服务器 (sessionserver.mojang.com)，请检查网络连接或防火墙设置。", e);
+                LOGGER.error("Unable to connect to Mojang session server (sessionserver.mojang.com), please check network connection or firewall settings.", e);
             }
         }
 
-        LOGGER.info("TrueUUID 已经加载");
+        LOGGER.info("TrueUUID loaded");
     }
 }

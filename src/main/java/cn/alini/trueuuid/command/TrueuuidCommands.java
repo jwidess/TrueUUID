@@ -152,10 +152,10 @@ public class TrueuuidCommands {
             if (v != null) TrueuuidConfig.COMMON.onlineShortSubtitle.set(String.valueOf(v));
 
             // 完成反馈 (Completion feedback)
-            src.sendSuccess(() -> Component.literal("[TrueUUID] 配置已从磁盘重载").withStyle(net.minecraft.ChatFormatting.GREEN), false);
+            src.sendSuccess(() -> Component.literal("[TrueUUID] Config reloaded from disk").withStyle(net.minecraft.ChatFormatting.GREEN), false);
             return 1;
         } catch (Exception ex) {
-            src.sendFailure(Component.literal("[TrueUUID] 重载配置失败: " + ex.getMessage()).withStyle(net.minecraft.ChatFormatting.RED));
+            src.sendFailure(Component.literal("[TrueUUID] Failed to reload config: " + ex.getMessage()).withStyle(net.minecraft.ChatFormatting.RED));
             return 0;
         }
     }
@@ -164,9 +164,9 @@ public class TrueuuidCommands {
     private static int cmdNomojangStatus(CommandSourceStack src) {
         boolean enabled = TrueuuidConfig.nomojangEnabled();
         if (enabled) {
-            src.sendSuccess(() -> Component.literal("[TrueUUID] NoMojang: 已启用").withStyle(net.minecraft.ChatFormatting.GREEN), false);
+            src.sendSuccess(() -> Component.literal("[TrueUUID] NoMojang: Enabled").withStyle(net.minecraft.ChatFormatting.GREEN), false);
         } else {
-            src.sendSuccess(() -> Component.literal("[TrueUUID] NoMojang: 已禁用").withStyle(net.minecraft.ChatFormatting.RED), false);
+            src.sendSuccess(() -> Component.literal("[TrueUUID] NoMojang: Disabled").withStyle(net.minecraft.ChatFormatting.RED), false);
         }
         return 1;
     }
@@ -175,11 +175,11 @@ public class TrueuuidCommands {
         try {
             TrueuuidConfig.COMMON.nomojangEnabled.set(value);
             // 运行时也可记录日志 (Can also log at runtime)
-            src.sendSuccess(() -> Component.literal("[TrueUUID] NoMojang 已" + (value ? "启用" : "禁用"))
+            src.sendSuccess(() -> Component.literal("[TrueUUID] NoMojang " + (value ? "Enabled" : "Disabled"))
                     .withStyle(value ? net.minecraft.ChatFormatting.GREEN : net.minecraft.ChatFormatting.RED), false);
             return 1;
         } catch (Throwable t) {
-            src.sendFailure(Component.literal("[TrueUUID] 无法设置 NoMojang: " + t.getMessage()).withStyle(net.minecraft.ChatFormatting.RED));
+            src.sendFailure(Component.literal("[TrueUUID] Unable to set NoMojang: " + t.getMessage()).withStyle(net.minecraft.ChatFormatting.RED));
             return 0;
         }
     }
@@ -201,15 +201,15 @@ public class TrueuuidCommands {
 
             int responseCode = conn.getResponseCode();
             if (responseCode == 200 || responseCode == 204 || responseCode == 403) {
-                src.sendSuccess(() -> Component.literal("[TrueUUID] Mojang 会话服务器可访问，响应码: " + responseCode)
+                src.sendSuccess(() -> Component.literal("[TrueUUID] Mojang session server accessible, response code: " + responseCode)
                         .withStyle(net.minecraft.ChatFormatting.GREEN), false);
             } else {
-                src.sendFailure(Component.literal("[TrueUUID] Mojang 会话服务器响应异常，响应码: " + responseCode)
+                src.sendFailure(Component.literal("[TrueUUID] Mojang session server response exception, response code: " + responseCode)
                         .withStyle(net.minecraft.ChatFormatting.RED));
             }
             return 1;
         } catch (Exception e) {
-            src.sendFailure(Component.literal("[TrueUUID] 无法连接到 Mojang 会话服务器: " + e.getMessage())
+            src.sendFailure(Component.literal("[TrueUUID] Unable to connect to Mojang session server: " + e.getMessage())
                     .withStyle(net.minecraft.ChatFormatting.RED));
             return 0;
         }
@@ -222,7 +222,7 @@ public class TrueuuidCommands {
 
         Optional<NameRegistry.Entry> reg = getEntry(name);
         if (reg.isEmpty()) {
-            src.sendFailure(Component.literal("未在注册表中找到该名字的正版记录：" + name));
+            src.sendFailure(Component.literal("Premium record not found in registry for name: " + name));
             return 0;
         }
         UUID premium = reg.get().premiumUuid;
@@ -289,10 +289,10 @@ public class TrueuuidCommands {
                 }
             }
 
-            src.sendSuccess(() -> Component.literal("完成。建议玩家下次以正版登录确认数据。"), false);
+            src.sendSuccess(() -> Component.literal("Done. It is recommended that the player logs in as premium next time to confirm data."), false);
             return 1;
         } catch (Exception ex) {
-            src.sendFailure(Component.literal("失败：" + ex.getMessage()));
+            src.sendFailure(Component.literal("Failed: " + ex.getMessage()));
             ex.printStackTrace();
             return 0;
         }
