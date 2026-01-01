@@ -258,9 +258,9 @@ public abstract class ServerLoginMixin {
             method.invoke(this);
         } catch (Exception e) {
             if (TrueuuidConfig.debug()) {
-                System.out.println("[TrueUUID] 调用失败: " + e);
+                System.out.println("[TrueUUID] Invocation failed: " + e);
             }
-            disconnect(Component.literal("服务器错误，请稍后重试"));
+            disconnect(Component.literal("Server error, please try again later"));
         }
     }
 
